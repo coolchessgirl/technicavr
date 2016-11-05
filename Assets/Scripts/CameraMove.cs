@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.VR;
 
 public class CameraMove : MonoBehaviour {
 
@@ -21,8 +22,6 @@ public class CameraMove : MonoBehaviour {
 	public float rotateSpeed;
 	public static int x = 0;
 
-	private bool axisInUse = false;
-
 	//public bool move = true;
 	//public string text;
 
@@ -41,14 +40,17 @@ public class CameraMove : MonoBehaviour {
 	void Update () {
 			Time.timeScale = 1;
 			//transform.Translate (Vector3.forward * Time.deltaTime * speed);
-		if(Input.GetKeyDown("space") || Input.GetButton("Fire2")){
-			if(axisInUse == false){
+		if(Input.GetKeyDown("space") || Input.GetButton("Fire2") || Input.GetMouseButtonDown(0)){
 			move = true;
 			StartCoroutine(Move());
-			}
 		}
+		var vrRot = InputTracking.GetLocalRotation(VRNode.CenterEye);
+		var eulerAngles = vrRot.eulerAngles;
+		eulerAngles.x = 0;
+		eulerAngles.z = 0;
+		vrRot.eulerAngles = eulerAngles;
 		if(move == true){
-			transform.Translate (Vector3.forward * Time.deltaTime * speed);
+			transform.Translate (vrRot * Vector3.forward * Time.deltaTime * speed, Space.World);
 		}
 		//if(Input.GetMouseButton(0)){
 		//	transform.Rotate(-transform.up * Time.deltaTime * rotateSpeed);
@@ -56,8 +58,8 @@ public class CameraMove : MonoBehaviour {
 		//if(Input.GetMouseButton(1)){
 		//	transform.Rotate(transform.up * Time.deltaTime * rotateSpeed);
 		//}
-		float rotation = Input.GetAxis("Horizontal") * rotateSpeed;
-		transform.Rotate(0, rotation, 0);
+		//float rotation = Input.GetAxis("Horizontal") * rotateSpeed;
+		//transform.Rotate(0, rotation, 0);
 
 		//text = num.ToString();
 		Timer();
