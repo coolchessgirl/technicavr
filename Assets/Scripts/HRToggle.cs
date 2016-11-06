@@ -79,8 +79,11 @@ public class HRToggle : MonoBehaviour {
 	public void StartButton(){
 		if(custom.isOn){
 		minHR = float.Parse(minInput.text);
+            Debug.Log("hi");
+            Debug.Log(minHR);
 		maxHR = float.Parse(maxInput.text);
-		}
+            Debug.Log(maxHR);
+        }
 		Application.LoadLevel("Level1");
 	}
 }

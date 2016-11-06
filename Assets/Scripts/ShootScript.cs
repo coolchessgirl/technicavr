@@ -9,11 +9,15 @@ public class ShootScript : MonoBehaviour {
 	public RawImage crosshair;
 	public Text score;
 	public static float scoreNum;
-	
 
-	// Use this for initialization
-	void Start () {
-		score.text = scoreNum.ToString();
+    public AudioClip shot;
+    AudioSource audio;
+
+
+    // Use this for initialization
+    void Start () {
+        audio = GetComponent<AudioSource>();
+        score.text = scoreNum.ToString();
 
 	}
 	IEnumerator crosshairColor(){
@@ -26,8 +30,10 @@ public class ShootScript : MonoBehaviour {
 	void Update () {
 		if(Input.GetButton("Fire1")){
 			StartCoroutine(crosshairColor());
-		}
-		Ray ray = new Ray(this.transform.position, transform.forward);
+            audio.PlayOneShot(shot, 0.7F);
+
+        }
+        Ray ray = new Ray(this.transform.position, transform.forward);
 		RaycastHit hit;
 		if (Physics.Raycast (ray, out hit, 100)) {
 			Debug.DrawLine (ray.origin, hit.point, Color.red);
@@ -39,13 +45,14 @@ public class ShootScript : MonoBehaviour {
 					hit.rigidbody.useGravity = true;
 					GameObject newFire = (GameObject)Instantiate (fire, hit.transform.position,Quaternion.identity);
 					Destroy (newFire, 0.3F);
-					GameObject[] cubes = new GameObject[10];
-					for (int x = 0; x < 10; x++) {
-						cubes[x] = (GameObject)Instantiate (dead, hit.transform.position, hit.transform.rotation);
-					}
-					for( int y = 0; y < 10; y++){
-						Destroy(cubes[y], 1.0F);
-					}
+					//GameObject[] cubes = new GameObject[10];
+					for (int x = 0; x < 5; x++) {
+						GameObject cube = (GameObject)Instantiate (dead, hit.transform.position, hit.transform.rotation);
+                        Destroy(cube, 1.0F);
+                    }
+					//for( int y = 0; y < 10; y++){
+					//	Destroy(cubes[y], 5.0F);
+					//}
 				}
 			}
 		}

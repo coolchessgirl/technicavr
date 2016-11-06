@@ -14,6 +14,7 @@ public class Trigger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Debug.Log ("start");
 		increase = true;
 		didHit = false;
 		didHit2 = false;

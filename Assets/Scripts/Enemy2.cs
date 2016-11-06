@@ -4,7 +4,11 @@ using System.Collections;
 public class Enemy2 : MonoBehaviour {
 
 	public RaycastHit hit;
-	public GameObject rayObject;
+	public GameObject ray1;
+	public GameObject ray2;
+	public GameObject ray3;
+	public GameObject ray4;
+
 	public GameObject player;
 	public float speed;
 	public bool move;
@@ -14,14 +18,12 @@ public class Enemy2 : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown("s")){
-			Application.LoadLevel("Level2");
+		if(Input.GetKeyDown("r")){
+			Application.LoadLevel("Level1");
 		}
 		TriggerRay();
 
@@ -35,17 +37,20 @@ public class Enemy2 : MonoBehaviour {
 	
 	}
 	void TriggerRay(){
-		Ray ray = new Ray(rayObject.transform.position, Vector3.forward);
-		Debug.DrawLine(ray.origin, hit.point);
-		if (Physics.Raycast (ray, out hit)) {
-			if(hit.collider.name.Contains("Main Camera")){
-				Debug.Log ("hi");
-				move = true;
-				if(rayObject.name.Contains("4")){
-					Application.LoadLevel("Level2");
+        GameObject[] rayObject = { ray1, ray2, ray3, ray4 };
+        for (int i = 0; i < 4; i++) {
+			Ray ray = new Ray (rayObject[i].transform.position, Vector3.forward);
+			Debug.DrawLine (ray.origin, hit.point);
+			if (Physics.Raycast (ray, out hit)) {
+				if (hit.collider.name.Contains ("Main")) {
+					Debug.Log ("hit");
+					move = true;
+					if (rayObject[i].name.Contains ("4")) {
+						Application.LoadLevel ("Level1");
+					}
 				}
 			}
-	}
+		}
 	}
 
 }

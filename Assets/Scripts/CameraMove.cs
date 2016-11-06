@@ -21,6 +21,9 @@ public class CameraMove : MonoBehaviour {
 	public Rigidbody player;
 	public float rotateSpeed;
 	public static int x = 0;
+    public int step = 0;
+    public bool left;
+    public bool right;  
 
 	//public bool move = true;
 	//public string text;
@@ -39,11 +42,30 @@ public class CameraMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 			Time.timeScale = 1;
-			//transform.Translate (Vector3.forward * Time.deltaTime * speed);
-		if(Input.GetKeyDown("space") || Input.GetButton("Fire2") || Input.GetMouseButtonDown(0)){
+        //transform.Translate (Vector3.forward * Time.deltaTime * speed);
+        left = Input.GetMouseButtonDown(0);
+        right = Input.GetMouseButton(1);
+
+        if (Input.GetKeyDown("space") || Input.GetButton("Fire2") ){
 			move = true;
 			StartCoroutine(Move());
 		}
+        if ( left || right )
+        {
+            if(left && step == 0)
+            {
+                step = 1;
+                move = true;
+                StartCoroutine(Move());
+            }
+            else if (right && step == 1)
+            {
+                step = 0;
+                move = true;
+                StartCoroutine(Move());
+            }
+
+        }
 		var vrRot = InputTracking.GetLocalRotation(VRNode.CenterEye);
 		var eulerAngles = vrRot.eulerAngles;
 		eulerAngles.x = 0;
